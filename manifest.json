@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "Hydracode Backoffice Helper",
+  "version": "1.0",
+  "description": "Помощник для hydracode",
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["https://backoffice.hydracode.com/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ]
+}

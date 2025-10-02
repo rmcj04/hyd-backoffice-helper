@@ -1,0 +1,43 @@
+/* Контейнер-обертка внутри ячейки для бейджей */
+.badge-wrapper {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.4;
+}
+
+/* Стили для бейджа со статистикой по ID */
+.customer-id-badge {
+    background-color: #e9ecef;
+    color: #495057;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    margin-top: 4px;
+    white-space: nowrap;
+}
+
+/* Стили для бейджа с разницей во времени */
+.time-diff-badge {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 11px;
+    margin-top: 4px;
+    white-space: nowrap;
+}
+
+/* Стили для блока со средней дельтой */
+#average-delta-display {
+    background-color: #fffbe6;
+    border: 1px solid #ffe58f;
+    color: #8a6d3b;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: left; /* <-- ИЗМЕНЕНИЕ ЗДЕСЬ: было 'center' */
+}
