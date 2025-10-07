@@ -160,8 +160,6 @@ waitForElement(tableSelector, () => {
             else
             {
 
-                chrome.runtime.sendMessage({notifyTitle: "Произошла ошибка", notifyMessage: `Добавь в репорт колонку ${cell}`})
-
                 out.set(`${cell}`, -1);
             }
 
@@ -191,13 +189,22 @@ waitForElement(tableSelector, () => {
 
             const cellsIndexes = findCells(["Customer Reference Id", "Created", "Finalized", "State"]);
             timeDeltas = [];
-            analyzeTable(cellsIndexes);
 
 
             isFeatureEnabled('customerStats').then(isEnabled => {
                 if(isEnabled)
                 {
-                    displayBadges(cellsIndexes.get("Customer Reference Id") + 1); // +1 из-за того, что нумерация элементов в DOM идет не с нуля
+
+                    if(cellsIndexes.get('Customer Reference Id') === -1)
+                    {
+                        chrome.runtime.sendMessage({notifyTitle: "Произошла ошибка", notifyMessage: `Добавь в репорт колонку Customer Reference Id`})
+                    }
+                    else
+                    {
+                        analyzeTable(cellsIndexes);
+                        displayBadges(cellsIndexes.get("Customer Reference Id") + 1); // +1 из-за того, что нумерация элементов в DOM идет не с нуля
+                    }
+
                 }
             })
 
@@ -205,8 +212,15 @@ waitForElement(tableSelector, () => {
             isFeatureEnabled('delta').then(isEnabled => {
                 if(isEnabled)
                 {
-                    calculateAndDisplayTimes(cellsIndexes);
-                    displayAverageDelta(timeDeltas);
+                    if(cellsIndexes.get('Created') === -1 || cellsIndexes.get('Finalized') === -1)
+                    {
+                        chrome.runtime.sendMessage({notifyTitle: "Произошла ошибка", notifyMessage: `Добавь в репорт колонки Created, Finalized`})
+                    }
+                    else
+                    {
+                        calculateAndDisplayTimes(cellsIndexes);
+                        displayAverageDelta(timeDeltas);
+                    }
                 }
             })
 

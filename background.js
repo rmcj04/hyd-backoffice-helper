@@ -8,7 +8,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse)=> {
             title: `Backoffice Helper | ${request.notifyTitle}`,
             iconUrl: "/icons/128.png",
             message: request.notifyMessage,
-            contextMessage: request.notifyMessage,
             type: "basic"
         });
 
