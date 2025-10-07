@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Настройки</title>
+    <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+
+<div class="settingsContainer">
+
+    <div class="innerContainer">
+
+        <h1 class="title"> Backoffice Helper </h1>
+
+        <div class="optionContainer">
+            <input type="checkbox" name="enableCustomerRefStats" id="customerRefStatsSwitcher">
+            <label for="customerRefStatsSwitcher">Отображать статистику по клиентам</label>
+        </div>
+
+        <div class="optionContainer">
+            <input type="checkbox" name="enableDelta" id="deltaSwitcher">
+            <label for="deltaSwitcher">Отображать разницу Created/Finalized</label>
+        </div>
+
+        <button id="save">Сохранить настройки</button>
+
+        <div class="title" id="status"></div>
+
+    </div>
+
+</div>
+
+<script src="/controllers/settings/settingsLogic.js"></script>
+</body>
+</html>

@@ -55,6 +55,24 @@ waitForElement(tableSelector, () => {
         });
     }
 
+    async function isFeatureEnabled(feature)
+    {
+        let items = await chrome.storage.sync.get(['displayClientStat', 'displayDelta']);
+
+        let features = {displayClientStat: true, displayDelta: true, ...items};
+
+        switch (feature) {
+            case "customerStats":
+                return features.displayClientStat === true;
+            case "delta":
+                return features.displayDelta === true;
+            default:
+                console.log("unknown feature")
+                return false;
+        }
+
+    }
+
     function displayBadges(customerRefIdCellId) {
         const idCells = document.querySelectorAll(`${tableSelector} tbody tr td:nth-child(${customerRefIdCellId})`);
         idCells.forEach(cell => {
@@ -171,9 +189,24 @@ waitForElement(tableSelector, () => {
             const cellsIndexes = findCells(["Customer Reference Id", "Created", "Finalized", "State"]);
             timeDeltas = [];
             analyzeTable(cellsIndexes);
-            displayBadges(cellsIndexes.get("Customer Reference Id") + 1); // +1 из-за того, что нумерация элементов в DOM идет не с нуля
-            calculateAndDisplayTimes(cellsIndexes);
-            displayAverageDelta(timeDeltas);
+
+
+            isFeatureEnabled('customerStats').then(isEnabled => {
+                if(isEnabled)
+                {
+                    displayBadges(cellsIndexes.get("Customer Reference Id") + 1); // +1 из-за того, что нумерация элементов в DOM идет не с нуля
+                }
+            })
+
+
+            isFeatureEnabled('delta').then(isEnabled => {
+                if(isEnabled)
+                {
+                    calculateAndDisplayTimes(cellsIndexes);
+                    displayAverageDelta(timeDeltas);
+                }
+            })
+
             setRenderDoneFlag()
         }
     }
