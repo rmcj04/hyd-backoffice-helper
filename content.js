@@ -159,6 +159,9 @@ waitForElement(tableSelector, () => {
             }
             else
             {
+
+                chrome.runtime.sendMessage({notifyTitle: "Произошла ошибка", notifyMessage: `Добавь в репорт колонку ${cell}`})
+
                 out.set(`${cell}`, -1);
             }
 

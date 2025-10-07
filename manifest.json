@@ -3,13 +3,17 @@
   "name": "Hydracode Backoffice Helper",
   "version": "1.0",
   "description": "Помощник для hydracode",
-  "permissions": ["activeTab", "storage"],
+  "permissions": ["activeTab", "storage", "notifications"],
   "icons" : {
     "32": "./icons/128.png",
     "128" : "./icons/128.png"
   },
   "action" : {
     "default_popup" : "views/settingsView/settings.html"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
   },
   "content_scripts": [
     {
