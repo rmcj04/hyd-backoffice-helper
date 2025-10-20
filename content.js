@@ -179,52 +179,60 @@ waitForElement(tableSelector, () => {
         table.appendChild(element);
     }
 
+    function isTableRendered()
+    {
+        return !!document.querySelector(tableSelector);
+    }
+
     function checkRenderDoneFlagIsExists()
     {
         return !!document.querySelector('#render-done');
     }
 
     function run() {
-        if (checkIsPaymentsPage()) {
 
-            const cellsIndexes = findCells(["Customer Reference Id", "Created", "Finalized", "State"]);
-            timeDeltas = [];
+        if(isTableRendered()) {
+            if (checkIsPaymentsPage()) {
+
+                const cellsIndexes = findCells(["Customer Reference Id", "Created", "Finalized", "State"]);
+                timeDeltas = [];
 
 
-            isFeatureEnabled('customerStats').then(isEnabled => {
-                if(isEnabled)
-                {
-
-                    if(cellsIndexes.get('Customer Reference Id') === -1)
+                isFeatureEnabled('customerStats').then(isEnabled => {
+                    if(isEnabled)
                     {
-                        chrome.runtime.sendMessage({notifyTitle: "Произошла ошибка", notifyMessage: `Добавь в репорт колонку Customer Reference Id`})
+
+                        if(cellsIndexes.get('Customer Reference Id') === -1)
+                        {
+                            chrome.runtime.sendMessage({notifyTitle: "Произошла ошибка", notifyMessage: `Добавь в репорт колонку Customer Reference Id`})
+                        }
+                        else
+                        {
+                            analyzeTable(cellsIndexes);
+                            displayBadges(cellsIndexes.get("Customer Reference Id") + 1); // +1 из-за того, что нумерация элементов в DOM идет не с нуля
+                        }
+
                     }
-                    else
+                })
+
+
+                isFeatureEnabled('delta').then(isEnabled => {
+                    if(isEnabled)
                     {
-                        analyzeTable(cellsIndexes);
-                        displayBadges(cellsIndexes.get("Customer Reference Id") + 1); // +1 из-за того, что нумерация элементов в DOM идет не с нуля
+                        if(cellsIndexes.get('Created') === -1 || cellsIndexes.get('Finalized') === -1)
+                        {
+                            chrome.runtime.sendMessage({notifyTitle: "Произошла ошибка", notifyMessage: `Добавь в репорт колонки Created, Finalized`})
+                        }
+                        else
+                        {
+                            calculateAndDisplayTimes(cellsIndexes);
+                            displayAverageDelta(timeDeltas);
+                        }
                     }
+                })
 
-                }
-            })
-
-
-            isFeatureEnabled('delta').then(isEnabled => {
-                if(isEnabled)
-                {
-                    if(cellsIndexes.get('Created') === -1 || cellsIndexes.get('Finalized') === -1)
-                    {
-                        chrome.runtime.sendMessage({notifyTitle: "Произошла ошибка", notifyMessage: `Добавь в репорт колонки Created, Finalized`})
-                    }
-                    else
-                    {
-                        calculateAndDisplayTimes(cellsIndexes);
-                        displayAverageDelta(timeDeltas);
-                    }
-                }
-            })
-
-            setRenderDoneFlag()
+                setRenderDoneFlag()
+            }
         }
     }
 
