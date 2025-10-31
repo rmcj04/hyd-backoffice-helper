@@ -9,7 +9,7 @@ function waitForElement(selector, callback) {
 }
 
 function checkIsPaymentsPage() {
-    let targetSelector = "#R7302135388147866 > div.t-BreadcrumbRegion-top > div.t-BreadcrumbRegion-body > div.t-BreadcrumbRegion-breadcrumb > ul > li > h1";
+    let targetSelector = "#R124883111009762779 > div.t-BreadcrumbRegion-top > div.t-BreadcrumbRegion-body > div.t-BreadcrumbRegion-breadcrumb > ul > li > h1";
     return !!document.querySelector(targetSelector);
 }
 
